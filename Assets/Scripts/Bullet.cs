@@ -22,8 +22,9 @@ public class Bullet : MonoBehaviour
         EnemyController enemy = hitInfo.gameObject.GetComponent<EnemyController>();
         if (enemy != null)
         {
-            buttonPower.scoreUp((int)Random.Range(4f,10f));
+            buttonPower.scoreUp((int)Random.Range(4f,7f));
             enemy.takeDamage();
+
         }
         Destroy(gameObject);
     }

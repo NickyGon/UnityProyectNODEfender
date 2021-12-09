@@ -6,7 +6,9 @@ using UnityEngine.Playables;
 public class GunRotate : MonoBehaviour
 {
     public PlayableDirector director;
-    [SerializeField] GameObject pause;
+    [SerializeField] PauseMenu pause;
+    [SerializeField] GameOverScript gameOver;
+    [SerializeField] GameSuccessScript gameSucess;
     private bool fix = false;
 
     public float limitRotate;
@@ -15,7 +17,7 @@ public class GunRotate : MonoBehaviour
     void Update()
     {
 
-        if (!pause.activeSelf && !(director.state == PlayState.Playing && !fix))
+        if (!(director.state == PlayState.Playing && !fix) && !pause.paused && !gameOver.isGameOver && !gameSucess.isSucess)
         {
             Vector3 mousepos = Input.mousePosition;
             Vector3 gunposition = Camera.main.WorldToScreenPoint(transform.position);

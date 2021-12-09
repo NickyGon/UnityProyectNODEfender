@@ -8,6 +8,11 @@ public class menuScript : MonoBehaviour
     public Animator fadeOutAnim;
     public Animator fadeInAnim;
 
+    public void Start()
+    {
+        Time.timeScale = 1f;
+        fadeOutAnim.Play("FadeOut",0);
+    }
     public void ButtonStart()
     {
         StartCoroutine(LoadScene());
@@ -22,7 +27,7 @@ public class menuScript : MonoBehaviour
     {
         fadeInAnim.SetBool("end", true);
         yield return new WaitForSeconds(1f);
-        SceneManager.LoadScene("LevelGameScene");
+        SceneManager.LoadScene("LevelSelectScene");
 
     }
 }

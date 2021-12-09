@@ -7,7 +7,8 @@ public class antenaScript : MonoBehaviour
 
     public GameOverScript gameOverCommander;
     public int health;
-
+    public Animator anim;
+    public AudioSource audio;
     int currenthealth;
     public HealthBar healthBar;
 
@@ -18,6 +19,10 @@ public class antenaScript : MonoBehaviour
        healthBar.SetHealth(currenthealth); 
         if (currenthealth <= 0)
         {
+            audio.Stop();
+            anim.SetBool("GameOver", true);
+            anim.SetBool("Paused", false);
+            anim.SetTrigger("UIClose");
             gameOverCommander.gameOver();
         }
     }
@@ -25,6 +30,7 @@ public class antenaScript : MonoBehaviour
 
     void Start()
     {
+        anim.SetBool("GameOver", false);
         currenthealth = health;
     }
 

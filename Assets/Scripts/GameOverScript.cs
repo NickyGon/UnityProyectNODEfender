@@ -5,25 +5,26 @@ using UnityEngine.SceneManagement;
 
 public class GameOverScript : MonoBehaviour
 {
-
-    public GameObject gameOverPanel;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        gameOverPanel.SetActive(false);
-    }
+    public bool isGameOver = false;
 
     // Update is called once per frame
     public void gameOver()
-    {     
-            gameOverPanel.SetActive(true);
-            Time.timeScale = 0f;
+    {
+        isGameOver = true;
+        Time.timeScale = 0f;
     }
 
     public void ToMenu()
     {
+        isGameOver = false;
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
+    }
+
+    public void Retry()
+    {
+        isGameOver = false;
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

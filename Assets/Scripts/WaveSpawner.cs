@@ -8,7 +8,9 @@ public class WaveSpawner : MonoBehaviour
 {
     public TextMeshProUGUI waveCountText;
     public PlayableDirector director;
-    public PowerUpButton powerup;
+    public Animator anim;
+    public UIScript ui;
+    public AudioSource roar;
 
     private bool fix = false;
 
@@ -39,11 +41,15 @@ public class WaveSpawner : MonoBehaviour
 
     public SpawnState state = SpawnState.COUNTING;
 
+
+
     void Start()
     {
         waveCountText.text = "Enemy wave: " + (nextWave + 1).ToString() + " of " + waves.Length.ToString();
         waveCountdown = timeBetweenWaves;
     }
+
+    
 
     void Update()
     {
@@ -51,6 +57,7 @@ public class WaveSpawner : MonoBehaviour
         {
             if (state==SpawnState.FINISHED)
             {
+                ui.animateEnd();
                 return;
             }
             if (state == SpawnState.WAITING)
@@ -78,6 +85,7 @@ public class WaveSpawner : MonoBehaviour
             }
         }
     }
+
 
     void WaveCompleted()
     {
@@ -113,6 +121,8 @@ public class WaveSpawner : MonoBehaviour
 
     IEnumerator SpawnWave(Wave _wave)
     {
+        roar.Play();
+
         //Wave spawning
         state = SpawnState.SPAWNING;
         for (int i = 0; i < _wave.count; i++)
@@ -127,7 +137,6 @@ public class WaveSpawner : MonoBehaviour
     void SpawnEnemy(Transform _enemy)
     {
   
-
         Transform _sp =spawnPoints[Random.Range(0,spawnPoints.Length)];
         Debug.Log(_sp.position);
         Instantiate(_enemy, _sp.position, _sp.rotation);
