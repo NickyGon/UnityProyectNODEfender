@@ -11,18 +11,23 @@ public class SurloeScript : MonoBehaviour
 
     //Animadores del sprite
     public Animator anim;
+    public AudioSource bang;
 
-    [SerializeField] GameObject pause;
+    public bool shootSetter=true;
     public LaserPowerUp laser;
 
     //Del timeline de animacion
     public PlayableDirector director;
     public PowerUpButton buttonPowerUp;
 
+    [SerializeField] PauseMenu pause;
+    [SerializeField] GameOverScript gameOver;
+    [SerializeField] GameSuccessScript gameSucess;
+
+
     //Para las balas (Surloe es un personaje de pocas acciones (dispara y se anima, NUNCA se mueve), por lo que aquí puedo utilizar muchos comandos)
     public GameObject bullet;
     public Transform start;
-    public float reloadCountdown=2.5f;
     bool isShot;
 
 
@@ -49,9 +54,6 @@ public class SurloeScript : MonoBehaviour
         }
         changeCutsceneAnim(cutscene);
         enableshoot(cutscene);
-        
-    
-       
     }
 
 
@@ -69,24 +71,32 @@ public class SurloeScript : MonoBehaviour
 
     void enableshoot(bool isCutscene)
     {
-        if (!isCutscene && !pause.activeSelf && !laser.shootIt)
+        if (!isCutscene)
         {
             Vector3 gunpos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                
-              if (Input.GetMouseButtonDown(0) && !isShot)
+              
+
+              if (Input.GetMouseButtonDown(0) && !isShot && !laser.shootIt && !pause.paused && !gameOver.isGameOver && !gameSucess.isSucess)
               {
-                    StartCoroutine(shooting());  
+                    StartCoroutine(shootingWithDelay());  
               }    
         }
     }
 
-    IEnumerator shooting()
+    IEnumerator shootingWithDelay()
     {
+        bang.Play();
         isShot = true;
         GameObject shoot = Instantiate(bullet, start.position, start.rotation);
         Bullet bullet1 = shoot.GetComponent<Bullet>();
         bullet1.buttonPower = buttonPowerUp;
-        yield return new WaitUntil(()=>shoot==null);
+        if (shootSetter)
+        {
+            yield return new WaitUntil(() => shoot == null);
+        } else
+        {
+            yield return null;
+        }
         isShot = false;
     }
 
